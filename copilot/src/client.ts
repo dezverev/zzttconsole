@@ -18,6 +18,15 @@ export async function ask(prompt: string): Promise<string> {
   const session = await c.createSession({
     model: config.model,
     provider: config.provider,
+    skillDirectories: ["./skills"],
+    mcpServers: {
+      "open-meteo": {
+        type: "local",
+        command: "node",
+        args: ["dist/mcp-weather.js"],
+        tools: ["*"],
+      },
+    },
     onPermissionRequest: async () => ({ kind: "approved" as const }),
   });
 
