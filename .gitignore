@@ -1,6 +1,3 @@
-# Qwen settings (contains local configuration)
-.qwen/settings.json
-
 # Dependencies
 node_modules/
 

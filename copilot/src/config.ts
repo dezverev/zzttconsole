@@ -13,7 +13,7 @@ export interface AppConfig {
 
 export function loadConfig(): AppConfig {
   return {
-    model: process.env.COPILOT_MODEL || "qwen/qwen3-coder-next",
+    model: process.env.COPILOT_MODEL || "gpt-5.4-mini",
     provider: {
       type: "openai",
       baseUrl: process.env.OPENAI_BASE_URL || "http://localhost:1234/v1",
