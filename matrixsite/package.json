@@ -1,0 +1,12 @@
+{
+  "name": "zzttconsole",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.2"
+  }
+}

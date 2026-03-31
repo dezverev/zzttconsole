@@ -1,0 +1,965 @@
+{
+  "meta": {
+    "title": "The Whispering Isle",
+    "version": "1.0",
+    "startRoom": "beach_shore",
+    "description": "A Zork-like mystery adventure set on a mysterious island."
+  },
+  "items": {
+    "rusty_key": {
+      "name": "rusty key",
+      "description": "An old iron key, corroded by salt air. The teeth are still intact.",
+      "portable": true
+    },
+    "brass_key": {
+      "name": "brass key",
+      "description": "A heavy brass key with an engraved wave pattern on the bow.",
+      "portable": true
+    },
+    "crystal_key": {
+      "name": "crystal key",
+      "description": "A translucent key that seems to glow faintly from within. It's warm to the touch.",
+      "portable": true
+    },
+    "lantern": {
+      "name": "oil lantern",
+      "description": "A battered but functional oil lantern. It casts a warm, steady glow when lit.",
+      "portable": true,
+      "lit": false
+    },
+    "rope": {
+      "name": "coil of rope",
+      "description": "About thirty feet of sturdy hemp rope, still in good condition.",
+      "portable": true
+    },
+    "machete": {
+      "name": "machete",
+      "description": "A well-worn machete with a wooden handle. The blade is still sharp enough to cut through thick vegetation.",
+      "portable": true
+    },
+    "radio_tube": {
+      "name": "vacuum tube",
+      "description": "A delicate glass vacuum tube, essential for old radio equipment.",
+      "portable": true
+    },
+    "radio_antenna": {
+      "name": "copper antenna",
+      "description": "A coiled copper antenna wire, about six feet long.",
+      "portable": true
+    },
+    "radio_battery": {
+      "name": "heavy battery",
+      "description": "A large lead-acid battery. It still holds a charge — you can feel a faint hum.",
+      "portable": true
+    },
+    "journal_1": {
+      "name": "journal page (1/10)",
+      "description": "A torn page from Dr. Voss's journal. It reads: 'Day 1 — We've arrived on the island. The geological surveys were right — there IS something unusual in the cave system beneath the mountain. Readings are off the charts.'",
+      "portable": true,
+      "type": "journal",
+      "number": 1
+    },
+    "journal_2": {
+      "name": "journal page (2/10)",
+      "description": "A water-stained journal page: 'Day 15 — The villagers speak of the caves with reverence. They call it the Throat of the World. Old Maro says his grandfather heard singing from deep within.'",
+      "portable": true,
+      "type": "journal",
+      "number": 2
+    },
+    "journal_3": {
+      "name": "journal page (3/10)",
+      "description": "A crumpled page: 'Day 34 — We've breached the inner chamber. There's a structure down here that predates anything in the archaeological record. Chen thinks it's ceremonial. I think it's functional.'",
+      "portable": true,
+      "type": "journal",
+      "number": 3
+    },
+    "journal_4": {
+      "name": "journal page (4/10)",
+      "description": "A page with hasty handwriting: 'Day 52 — The artifact responds to sound. When Chen hummed near it yesterday, the crystals resonated. I've begun systematic frequency tests.'",
+      "portable": true,
+      "type": "journal",
+      "number": 4
+    },
+    "journal_5": {
+      "name": "journal page (5/10)",
+      "description": "A page with burn marks at the edges: 'Day 71 — Something is wrong. The artifact activated during last night's storm. The whole cave system lit up. Three researchers reported hearing whispers.'",
+      "portable": true,
+      "type": "journal",
+      "number": 5
+    },
+    "journal_6": {
+      "name": "journal page (6/10)",
+      "description": "A page stiff with dried mud: 'Day 89 — Half the team wants to leave. The whispers are constant now. They're not random — there are patterns. I've been transcribing them.'",
+      "portable": true,
+      "type": "journal",
+      "number": 6
+    },
+    "journal_7": {
+      "name": "journal page (7/10)",
+      "description": "A torn page: 'Day 103 — I understand now. The artifact isn't a relic — it's a beacon. It's been calling out for thousands of years. And something has finally answered.'",
+      "portable": true,
+      "type": "journal",
+      "number": 7
+    },
+    "journal_8": {
+      "name": "journal page (8/10)",
+      "description": "A page written in shaking hand: 'Day 112 — The village is empty. Everyone left on the supply boat. Only Chen, Briggs, and I remain. The marsh has become impassable — strange lights at night.'",
+      "portable": true,
+      "type": "journal",
+      "number": 8
+    },
+    "journal_9": {
+      "name": "journal page (9/10)",
+      "description": "A page with a diagram of concentric circles: 'Day 118 — I've decoded the whispers. They're instructions. The artifact can be silenced, but only from the temple above the caves. The three keys must be placed simultaneously.'",
+      "portable": true,
+      "type": "journal",
+      "number": 9
+    },
+    "journal_10": {
+      "name": "journal page (10/10)",
+      "description": "The final page, barely legible: 'Day 121 — I'm going to the temple alone. If you find this, know that I tried to fix what I broke. The keys are hidden — one with the sea, one with the earth, one with the sky. Find them. Silence the beacon. Save this place. — E.V.'",
+      "portable": true,
+      "type": "journal",
+      "number": 10
+    },
+    "map_fragment_1": {
+      "name": "map fragment (beach)",
+      "description": "A torn piece of a hand-drawn map showing the island's southern shore and beach areas.",
+      "portable": true,
+      "type": "map"
+    },
+    "map_fragment_2": {
+      "name": "map fragment (interior)",
+      "description": "A torn piece of a hand-drawn map showing jungle paths and the village layout.",
+      "portable": true,
+      "type": "map"
+    },
+    "map_fragment_3": {
+      "name": "map fragment (north)",
+      "description": "A torn piece of a hand-drawn map showing the mountain, caves, and temple ruins.",
+      "portable": true,
+      "type": "map"
+    },
+    "artifact": {
+      "name": "ancient artifact",
+      "description": "A crystalline orb set in a frame of dark metal covered in unknown script. It pulses with a deep, resonant hum that you feel in your bones rather than hear.",
+      "portable": true
+    },
+    "fishing_net": {
+      "name": "fishing net",
+      "description": "A tangled but usable fishing net. Could be useful for catching more than fish.",
+      "portable": true
+    },
+    "flare_gun": {
+      "name": "flare gun",
+      "description": "A maritime flare gun with a single flare loaded. For emergencies only.",
+      "portable": true
+    },
+    "crowbar": {
+      "name": "crowbar",
+      "description": "A heavy iron crowbar. Good for prying things open.",
+      "portable": true
+    },
+    "old_photograph": {
+      "name": "faded photograph",
+      "description": "A photograph showing a group of researchers standing at the mouth of a cave. A woman in the center — Dr. Voss, presumably — holds a glowing object.",
+      "portable": true
+    },
+    "compass": {
+      "name": "broken compass",
+      "description": "A ship's compass. The needle spins erratically, never settling on north. Near the artifact's influence, perhaps.",
+      "portable": true
+    },
+    "dried_herbs": {
+      "name": "bundle of dried herbs",
+      "description": "A bundle of aromatic herbs tied with twine. They smell of sage and something unidentifiable.",
+      "portable": true
+    },
+    "stone_tablet": {
+      "name": "stone tablet",
+      "description": "A small stone tablet covered in the same script as the artifact's frame. It might be a translation key.",
+      "portable": true
+    }
+  },
+  "npcs": {
+    "fisherman": {
+      "name": "Old Maro",
+      "description": "A weathered old man with deep-set eyes and sun-darkened skin. He sits mending a net, his gnarled fingers working with practiced ease. He looks up at you with a mix of suspicion and pity.",
+      "location": "village_dock",
+      "dialogue": {
+        "default": "Old Maro squints at you. 'Another one washed up, eh? This island... she collects people like shells on the shore.'",
+        "hello": "'Name's Maro. Been fishing these waters sixty years. Used to be a good life, before the researchers came.'",
+        "island": "'This island's been here longer than any map says. My grandfather's grandfather knew it. They called it the Whispering Isle — and not as a compliment.'",
+        "researchers": "'They came ten years ago. Scientists. Said they were studying geology. Ha! They were digging where they shouldn't have been digging.'",
+        "voss": "'Dr. Voss? Brilliant woman. Stubborn as a barnacle. She found something in those caves and it changed her. Changed everything.'",
+        "caves": "'Stay away from the caves if you've got any sense. The whispers started down there, and they haven't stopped.'",
+        "whispers": "'You'll hear them soon enough. Everyone does. At first you think it's the wind, or the sea. But the sea doesn't call your name.'",
+        "escape": "'Only way off this island is the radio in the lighthouse. Briggs keeps it, but it's been broken for years. Maybe you're the clever sort who can fix it.'",
+        "key": "'A key? There was a key the researchers used for the supply shed. I think Dr. Voss left one somewhere near the tidepools. She was always poking around there.'",
+        "artifact": "'Don't speak of that thing to me. It's cursed, whatever it is. My nets haven't pulled right since they dug it up.'",
+        "help": "'I'm too old to go adventuring. But I'll tell you what I know. Ask me about the island, the researchers, or that blasted artifact.'"
+      }
+    },
+    "chen": {
+      "name": "Dr. Chen",
+      "description": "A middle-aged woman in a stained lab coat, her hair pulled back in a messy bun. Dark circles under her eyes suggest she hasn't slept well in a long time. She's surrounded by stacks of notes and equipment.",
+      "location": "research_lab",
+      "dialogue": {
+        "default": "Dr. Chen barely looks up from her notes. 'If you're another hallucination, please come back during office hours.'",
+        "hello": "'You're... real? Actually real? I haven't seen a new face in years. I'm Dr. Lin Chen. I was Elara's research partner.'",
+        "voss": "'Elara was the most brilliant mind I've ever known. And the most reckless. She couldn't leave the artifact alone. She said it was speaking to her, giving her equations, formulas... I thought she was losing her mind. Now I'm not so sure.'",
+        "artifact": "'The artifact is a resonance device of some kind. It amplifies and transmits sound at frequencies we can barely measure. When Elara activated it fully... the whole island changed.'",
+        "research": "'We were supposed to be studying geological anomalies. The energy signatures led us to the caves. What we found there wasn't geological — it was architectural. Someone built that chamber thousands of years ago.'",
+        "whispers": "'The whispers are the artifact's transmission. It's broadcasting something — coordinates, maybe, or a signal. Elara believed it was a beacon, calling to something across a vast distance.'",
+        "temple": "'The temple above the caves is connected to the artifact. Elara found references in the carvings — three keys, placed in three locks, can shut the artifact down. Or amplify it. Depends on the sequence.'",
+        "keys": "'Elara hid the three keys before she went to the temple that last time. She said: one with the sea, one with the earth, one with the sky. Poetic, but not terribly helpful.'",
+        "radio": "'The radio! Yes, Briggs had one at the lighthouse. A vacuum tube blew out during one of the artifact's surges. I have schematics somewhere... you'd need a new tube, antenna wire, and a power source.'",
+        "help": "'Find the journal pages Elara scattered around the island. They'll tell you what happened. And for all our sakes, find those three keys and shut down the artifact. The signal is getting stronger.'",
+        "tablet": "'A stone tablet? Let me see... yes! This is a Rosetta Stone for the artifact's script. With this, I can decode the carvings in the temple. The sequence to silence the beacon is: sea, earth, sky. Place the keys in that order.'"
+      }
+    },
+    "maya": {
+      "name": "Maya",
+      "description": "A young woman in her twenties, lean and sun-bronzed, wearing clothes fashioned from salvaged materials. She carries a spear made from a sharpened stick and moves with the alertness of someone used to danger.",
+      "location": "jungle_camp",
+      "dialogue": {
+        "default": "Maya watches you approach with her spear raised. 'State your business, stranger.'",
+        "hello": "'I'm Maya. My boat went down in a storm three years ago. Been surviving here since. You get used to it. Mostly.'",
+        "island": "'The jungle is safe enough if you know the paths. The marsh is death — don't go in without a light. And the caves... I don't go near the caves.'",
+        "jungle": "'I know every trail in this jungle. There's fruit if you know where to look, fresh water from the mountain streams, and the old village has supplies if you can get past the locked doors.'",
+        "machete": "'A machete? Check the old groundskeeper's shed near the village. That's where they kept the tools.'",
+        "marsh": "'The marsh wasn't always dangerous. After the researchers did whatever they did, it changed. Strange lights, the ground shifts under you. You need a lantern at minimum, and even then...'",
+        "village": "'The village emptied out years ago. Most of the buildings are locked up tight. Old Maro stayed — stubborn old goat. There's useful stuff in those buildings if you can find the keys.'",
+        "herbs": "'Those herbs? I gathered them from the mountain meadow. They keep the whispers quiet, if you burn them. Take some — you'll need them in the caves.'",
+        "help": "'I'll trade you. There's a fishing net caught on the rocks at the eastern cove. Bring it to me and I'll tell you about the path to the mountain that doesn't go through the marsh.'",
+        "net": "'You found my net! Thank you. Alright, a deal's a deal. There's a hidden trail that starts behind the waterfall in the western jungle. It leads up to the mountain ridge without going through the marsh. Watch for the carved stones — they mark the way.'"
+      }
+    },
+    "hermit": {
+      "name": "The Hermit",
+      "description": "A gaunt figure wrapped in tattered robes, sitting cross-legged before a small fire in the cave. Their eyes are milky white — blind — but they turn to face you with unsettling precision. The air around them smells of old incense.",
+      "location": "cave_hermit",
+      "dialogue": {
+        "default": "The Hermit tilts their head. 'The island told me you were coming. Sit. Listen.'",
+        "hello": "'Names are for the world above. Down here, I am simply the one who listens. I have heard the whispers longer than anyone. They have... shaped me.'",
+        "whispers": "'The whispers are not malevolent. They are... an invitation. The artifact sings to the void, and the void hums back. It has been this way for millennia. The researchers merely turned up the volume.'",
+        "artifact": "'The artifact was placed here by those who came before — not human, not entirely. They built the temple, carved the caves, and left the beacon as a promise: we will return. Dr. Voss merely woke it from its slumber.'",
+        "temple": "'The temple is the control room, if you will. Three locks, three keys. Turn them in the order of creation — sea, then earth, then sky — and the beacon sleeps again. Reverse the order... and you open a door that cannot be closed.'",
+        "keys": "'The crystal key is what you seek here in the depths. It rests in the Crystal Grotto, beyond the underground lake. But the lake is dark, and what swims in it does not welcome visitors. You will need light.'",
+        "voss": "'Dr. Voss came to me before the end. She understood, finally, what she had awakened. She went to the temple to silence it. She did not return. Her spirit lingers there still, waiting for someone to finish what she started.'",
+        "blind": "'My eyes? The whispers took them. A fair trade — they gave me other ways of seeing. I know where every creature stands on this island. I know where the currents flow beneath the rock. I know you are afraid. That is wise.'",
+        "help": "'Bring me the stone tablet from the ruins, and I will tell you the true history of this island. Knowledge is the sharpest blade.'"
+      }
+    },
+    "briggs": {
+      "name": "Captain Briggs",
+      "description": "A stout, bearded man in a faded naval uniform, perpetually tinkering with machinery. His hands are oil-stained but steady, and his eyes are sharp despite his age. A pipe juts from the corner of his mouth, unlit.",
+      "location": "lighthouse_workshop",
+      "dialogue": {
+        "default": "Briggs wipes his hands on a rag. 'Well well. A visitor. Been a while since anyone climbed up here.'",
+        "hello": "'Captain Briggs, retired. Navy man, forty years. Came here to tend the lighthouse as a favor to the research team. That was ten years ago. Some favor.'",
+        "lighthouse": "'She's a fine old light, this one. Built in 1892. I keep her burning — ships still pass these waters, and they need the warning. This island's reefs have claimed more than a few hulls.'",
+        "radio": "'The radio? Aye, it worked once. Could reach the mainland easy. But when that blasted artifact surged, it blew the vacuum tube clean out. Fried the antenna too. I'd fix it myself but I haven't got the parts.'",
+        "parts": "'I need three things: a vacuum tube — might find one in the research station's equipment. A copper antenna — there's wire in the supply shed near the village. And a battery with enough juice to power the transmitter. The station had backup batteries.'",
+        "escape": "'Fix my radio and I'll call in a rescue. Simple as that. Of course, nothing on this island is simple, is it?'",
+        "voss": "'Dr. Voss was decent folk. Driven, but decent. She'd come up here sometimes, watch the sea. Near the end she looked haunted. Said she'd made a terrible mistake and needed to fix it.'",
+        "key": "'A brass key? Matter of fact, I found one washed up on the rocks below the lighthouse weeks ago. Odd thing — had wave patterns on it. I've been using it as a paperweight. Here, take it if you need it. I've no use for it.'",
+        "flare": "'The flare gun's in the storage room downstairs. One shot. Make it count — if the radio doesn't work, that flare might be your only chance.'",
+        "help": "'Get me those radio parts and I'll have us off this rock in no time. A vacuum tube, copper antenna wire, and a charged battery. That's all I need.'"
+      }
+    },
+    "ghost_voss": {
+      "name": "Dr. Voss's Spirit",
+      "description": "A translucent figure of a woman in a lab coat, flickering like a candle in the wind. Her expression is one of profound sadness and determination. She doesn't quite touch the ground.",
+      "location": "temple_sanctum",
+      "requiresJournalPages": 7,
+      "dialogue": {
+        "default": "The spectral figure turns to you, her voice echoing as if from a great distance. 'You've read my words. You know what I've done. Will you finish it?'",
+        "hello": "'I am... what remains. The artifact's energy sustains this echo of me. I cannot rest until the beacon is silenced.'",
+        "artifact": "'I activated the beacon fully on Day 112. I thought I was making first contact. Instead, I sent a signal into the dark and something answered. Something vast and patient. It's still coming. The beacon must be silenced.'",
+        "keys": "'I hid the three keys where they'd be safe. The rusty key — with the sea, in the tidepools. The brass key — with the sky, at the lighthouse heights. The crystal key — with the earth, deep in the Crystal Grotto.'",
+        "temple": "'Place the three keys in the altar locks. The order matters: sea, earth, sky. That is the order of creation, the order of silence. Reverse it and you amplify the signal. Please... don't make my mistake twice.'",
+        "silence": "'When the beacon falls silent, I can rest. The island will heal. The whispers will fade. But you must hurry — the signal grows stronger each day. What approaches will not stop simply because the beacon goes dark. But at least it won't know exactly where to find us.'",
+        "help": "'Find the three keys. Bring them to the altar. Place them: sea, earth, sky. Silence the beacon. Then use the radio to call for help and leave this place forever. That is all that matters now.'"
+      }
+    }
+  },
+  "rooms": {
+    "beach_shore": {
+      "name": "Rocky Shore",
+      "zone": "beach",
+      "description": "You stand on a rocky stretch of shoreline, waves crashing against tumbled boulders slick with spray. Splintered planks from a wrecked vessel litter the waterline — your vessel, you remember with a pang. To the north, a sandy beach stretches toward distant tree line. East along the rocks, you can see tidepools glinting in the light. The sea stretches endlessly to the south and west.",
+      "exits": { "north": "beach_sandy", "east": "beach_tidepools" },
+      "items": ["compass", "journal_1"]
+    },
+    "beach_sandy": {
+      "name": "Sandy Beach",
+      "zone": "beach",
+      "description": "A wide crescent of pale sand curves between headlands of dark volcanic rock. Coconut palms lean drunkenly at the jungle's edge, their fronds rattling in the salt breeze. Footprints — old ones, half-filled with sand — lead north toward the trees. A weathered signpost reads 'RESEARCH STATION - 2km N' with an arrow pointing into the jungle.",
+      "exits": { "south": "beach_shore", "north": "beach_path", "east": "beach_cove", "west": "beach_dunes" },
+      "items": ["map_fragment_1"]
+    },
+    "beach_tidepools": {
+      "name": "Tidepools",
+      "zone": "beach",
+      "description": "Shallow pools of trapped seawater teem with tiny crabs, anemones, and darting silver fish. The rocks here are carved with what might be natural erosion patterns — or might be something else entirely. One particularly deep pool catches your eye: something metallic glints at the bottom.",
+      "exits": { "west": "beach_shore", "north": "beach_rocky_east" },
+      "items": ["rusty_key"]
+    },
+    "beach_cove": {
+      "name": "Eastern Cove",
+      "zone": "beach",
+      "description": "A sheltered cove where the water is eerily calm and crystal clear. You can see the sandy bottom ten feet down, dotted with sea urchins and starfish. A fishing net is tangled around the rocks at the waterline, caught on a jagged outcrop. The jungle presses close to the shore here.",
+      "exits": { "west": "beach_sandy", "north": "jungle_edge_east" },
+      "items": ["fishing_net"]
+    },
+    "beach_dunes": {
+      "name": "Sand Dunes",
+      "zone": "beach",
+      "description": "Rolling dunes of fine white sand rise and fall like frozen waves. Sea grass whispers in the constant wind. From the top of the highest dune, you can see the dark mass of the jungle to the north and the glint of a lighthouse far to the northwest along the coast.",
+      "exits": { "east": "beach_sandy", "north": "jungle_edge_west", "west": "coast_trail_south" },
+      "items": []
+    },
+    "beach_path": {
+      "name": "Beach Path",
+      "zone": "beach",
+      "description": "A sandy path leads from the beach into the shade of the jungle canopy. The transition is abrupt — blazing sun one step, cool green shadow the next. The path is well-worn but overgrown, as if once maintained but long abandoned. Bird calls echo from the canopy above.",
+      "exits": { "south": "beach_sandy", "north": "jungle_south" },
+      "items": []
+    },
+    "beach_rocky_east": {
+      "name": "Eastern Rocks",
+      "zone": "beach",
+      "description": "A tumble of large volcanic boulders stretches along the eastern shore. The rocks are sharp and covered in barnacles. Between two massive boulders, a narrow passage leads into a sea cave. The opening is dark and the sound of dripping water echoes from within.",
+      "exits": { "south": "beach_tidepools", "north": "beach_cove", "in": "sea_cave" },
+      "items": []
+    },
+    "sea_cave": {
+      "name": "Sea Cave",
+      "zone": "beach",
+      "description": "A small cave carved by centuries of waves. The ceiling drips constantly and the floor is slippery with algae. In the back of the cave, someone has stacked supplies: rusted cans, a tattered blanket, and scratched tally marks on the wall — hundreds of them. A narrow shelf holds a battered oil lantern.",
+      "exits": { "out": "beach_rocky_east" },
+      "items": ["lantern", "journal_2"]
+    },
+    "coast_trail_south": {
+      "name": "Southern Coastal Trail",
+      "zone": "beach",
+      "description": "A narrow trail hugs the cliff edge, offering dizzying views of the sea crashing against rocks far below. The path is treacherous — loose gravel and no guardrail. To the northwest, the trail continues toward what appears to be a lighthouse perched on the headland.",
+      "exits": { "east": "beach_dunes", "northwest": "coast_trail_mid" },
+      "items": []
+    },
+    "jungle_south": {
+      "name": "Southern Jungle",
+      "zone": "jungle",
+      "description": "The jungle closes in around you like a living thing. Massive ferns brush your shoulders and vines hang like curtains between the trees. The air is thick with humidity and the scent of decay and growth intertwined. The path forks — one trail heads northeast, another northwest, both swallowed by green.",
+      "exits": { "south": "beach_path", "northeast": "jungle_central", "northwest": "jungle_west" },
+      "items": []
+    },
+    "jungle_central": {
+      "name": "Jungle Clearing",
+      "zone": "jungle",
+      "description": "A rare break in the canopy lets sunlight pour into a small clearing. A massive banyan tree dominates the center, its aerial roots forming a cathedral of wood. Someone has hung wind chimes from the lower branches — they tinkle softly though you feel no breeze. A carved stone marker points north toward 'VILLAGE'.",
+      "exits": { "southwest": "jungle_south", "north": "jungle_north", "east": "jungle_east", "west": "jungle_west" },
+      "items": ["journal_3"]
+    },
+    "jungle_west": {
+      "name": "Western Jungle Trail",
+      "zone": "jungle",
+      "description": "A winding trail through dense undergrowth. The vegetation here is so thick that you can barely see five feet in any direction. Strange orchids bloom in the shadows — deep purple with veins of luminescent blue. You hear running water somewhere to the west.",
+      "exits": { "east": "jungle_central", "southeast": "jungle_south", "west": "jungle_waterfall", "north": "jungle_camp" },
+      "items": []
+    },
+    "jungle_east": {
+      "name": "Eastern Jungle",
+      "zone": "jungle",
+      "description": "The jungle thins slightly here, transitioning from dense tropical forest to something drier. You spot animal tracks in the mud — too large for anything you'd expect on an island this size. A faint smell of smoke drifts from somewhere to the north.",
+      "exits": { "west": "jungle_central", "north": "village_outskirts", "south": "jungle_edge_east" },
+      "items": []
+    },
+    "jungle_edge_east": {
+      "name": "Jungle's Eastern Edge",
+      "zone": "jungle",
+      "description": "The jungle meets the coastline here in a tangle of roots and sand. Mangrove-like trees wade into the shallows on twisted stilts. The canopy is alive with the chatter of unseen birds. A faded trail leads deeper into the jungle.",
+      "exits": { "south": "beach_cove", "north": "jungle_east", "west": "jungle_south" },
+      "items": []
+    },
+    "jungle_edge_west": {
+      "name": "Jungle's Western Edge",
+      "zone": "jungle",
+      "description": "Where the sand dunes meet the jungle, the vegetation grows in stubborn clumps, fighting for purchase in the sandy soil. A path leads east into the proper jungle. To the north, you can hear what sounds like a stream.",
+      "exits": { "south": "beach_dunes", "east": "jungle_south", "north": "jungle_west" },
+      "items": []
+    },
+    "jungle_waterfall": {
+      "name": "Hidden Waterfall",
+      "zone": "jungle",
+      "description": "A beautiful waterfall cascades twenty feet down a mossy rock face into a clear pool. The mist keeps everything perpetually damp and glistening. Ferns the size of small trees crowd the banks. Behind the waterfall, if you look carefully, you can see the dark outline of a passage through the rock.",
+      "exits": { "east": "jungle_west", "behind_waterfall": "jungle_hidden_path" },
+      "items": []
+    },
+    "jungle_hidden_path": {
+      "name": "Hidden Mountain Path",
+      "zone": "jungle",
+      "description": "Behind the waterfall, a narrow path climbs steeply upward through the rock. Carved stone markers — ancient, covered in lichen — line the way at regular intervals. The path is slippery but passable. It's clearly artificial, built by hands unknown long ago. This trail bypasses the marsh entirely.",
+      "exits": { "out": "jungle_waterfall", "up": "mountain_trail_lower" },
+      "items": []
+    },
+    "jungle_camp": {
+      "name": "Jungle Camp",
+      "zone": "jungle",
+      "description": "A crude but effective campsite nestled between the buttress roots of an enormous tree. A lean-to shelter of palm fronds provides cover, and a fire pit ringed with stones holds smoldering coals. Drying racks hold strips of fish and fruit. This is clearly someone's home.",
+      "exits": { "south": "jungle_west", "east": "jungle_north" },
+      "items": ["dried_herbs"],
+      "npc": "maya"
+    },
+    "jungle_north": {
+      "name": "Northern Jungle",
+      "zone": "jungle",
+      "description": "The jungle grows darker and denser as you push north. The trees here are ancient — trunks wider than houses, bark scarred and gnarled. The ground is spongy with centuries of fallen leaves. Shafts of light pierce the canopy like spotlights on an empty stage. The village lies to the east, and the ground begins to slope upward to the north.",
+      "exits": { "south": "jungle_central", "east": "village_outskirts", "north": "jungle_marsh_edge", "west": "jungle_camp" },
+      "items": []
+    },
+    "jungle_marsh_edge": {
+      "name": "Edge of the Marsh",
+      "zone": "jungle",
+      "description": "The firm ground of the jungle gives way to soft, sucking mud. The trees here are dead or dying, their bare branches reaching skyward like skeletal fingers. A pungent smell of sulfur and rotting vegetation hangs in the air. Strange pale lights flicker in the murk ahead. A crude sign reads: 'DANGER — DO NOT ENTER WITHOUT LIGHT'.",
+      "exits": { "south": "jungle_north", "north": "marsh_entrance" },
+      "requires": { "item": "lantern", "message": "The marsh ahead is pitch dark and treacherous. You'll need a light source before venturing in." },
+      "items": []
+    },
+    "jungle_ruins_path": {
+      "name": "Overgrown Path",
+      "zone": "jungle",
+      "description": "An ancient stone path, nearly consumed by the jungle, leads through an archway of intertwined branches. The stones are carved with worn symbols that match nothing in any language you know. The air feels different here — charged, electric, like before a storm.",
+      "exits": { "south": "village_north", "north": "ruins_entrance" },
+      "items": []
+    },
+    "village_outskirts": {
+      "name": "Village Outskirts",
+      "zone": "village",
+      "description": "The jungle parts to reveal the remnants of a small fishing village. A dirt road runs north-south between a dozen or so wooden buildings in various states of disrepair. Fishing nets hang rotting on poles. A rusted bicycle leans against a wall. The village has the eerie stillness of a place abandoned in haste.",
+      "exits": { "south": "jungle_east", "north": "village_square", "west": "jungle_north" },
+      "items": []
+    },
+    "village_square": {
+      "name": "Village Square",
+      "zone": "village",
+      "description": "The center of the village — a packed-earth square with a dry fountain at its center. The fountain depicts a sea creature of uncertain species, its mouth open in a frozen roar. Buildings surround the square: a general store to the east, a tavern to the west, and the road continues north and south.",
+      "exits": { "south": "village_outskirts", "north": "village_north", "east": "village_store", "west": "village_tavern" },
+      "items": []
+    },
+    "village_store": {
+      "name": "General Store",
+      "zone": "village",
+      "description": "The door hangs open on one hinge. Inside, shelves are mostly bare, ransacked by time and weather. A few rusted cans remain, their labels long gone. The counter is thick with dust. Behind it, a locked door leads to a back room. The lock is rusty but solid.",
+      "exits": { "west": "village_square", "back": "village_store_back" },
+      "lockedExits": { "back": { "key": "rusty_key", "message": "The back door is secured with a heavy rusty lock." } },
+      "items": []
+    },
+    "village_store_back": {
+      "name": "Store Back Room",
+      "zone": "village",
+      "description": "A cramped storage room lined with shelves. Most are empty, but you find some useful supplies that were overlooked by whoever emptied this place. A coil of good rope hangs from a hook, and on a high shelf sits a copper antenna, still in its packaging.",
+      "exits": { "front": "village_store" },
+      "items": ["rope", "radio_antenna"]
+    },
+    "village_tavern": {
+      "name": "The Salty Dog Tavern",
+      "zone": "village",
+      "description": "A small tavern with a hand-painted sign showing a dog in a sailor's cap. Inside, overturned chairs and broken glass speak of a hurried departure. The bar is intact, though the bottles behind it are empty. A faded map of the island hangs on the wall behind the bar, torn in half — the northern portion is missing. There's a trapdoor behind the bar.",
+      "exits": { "east": "village_square", "down": "village_cellar" },
+      "items": ["map_fragment_2"]
+    },
+    "village_cellar": {
+      "name": "Tavern Cellar",
+      "zone": "village",
+      "description": "A damp, cool cellar beneath the tavern. Empty barrels line the walls. In one corner, someone has set up a cot and a small desk — a hidden living space. Papers are scattered on the desk, mostly weather-beaten and illegible. One page stands out, written in precise handwriting.",
+      "exits": { "up": "village_tavern" },
+      "items": ["journal_4"]
+    },
+    "village_north": {
+      "name": "North Village Road",
+      "zone": "village",
+      "description": "The village road continues north, passing between the last of the buildings before giving way to jungle again. A small church stands to the west, its steeple crooked. To the east, a path leads to the village dock. An overgrown path leads north into the deep jungle toward ancient ruins.",
+      "exits": { "south": "village_square", "west": "village_church", "east": "village_dock", "north": "jungle_ruins_path" },
+      "items": []
+    },
+    "village_church": {
+      "name": "Village Church",
+      "zone": "village",
+      "description": "A small wooden church, surprisingly intact. The pews are dusty but orderly. Stained glass windows, simple but beautiful, cast colored light across the floor. At the altar, fresh wildflowers sit in a jar — someone still comes here. A notice board near the door holds faded community announcements and a more recent hand-written note.",
+      "exits": { "east": "village_north" },
+      "items": ["old_photograph"]
+    },
+    "village_dock": {
+      "name": "Village Dock",
+      "zone": "village",
+      "description": "A wooden dock extends into a small harbor. The planks are rotting in places — watch your step. Two boats are moored here: one capsized and barnacle-encrusted, the other merely decrepit. An old man sits at the dock's end, patiently mending a fishing net.",
+      "exits": { "west": "village_north" },
+      "items": [],
+      "npc": "fisherman"
+    },
+    "village_shed": {
+      "name": "Groundskeeper's Shed",
+      "zone": "village",
+      "description": "A small wooden shed behind the general store, its door hanging open. Garden tools rust on hooks along the walls: rakes, shovels, a wheelbarrow. On a workbench near the back, a machete sits in a leather sheath, apparently overlooked when the village was abandoned.",
+      "exits": { "out": "village_outskirts" },
+      "items": ["machete"]
+    },
+    "village_well": {
+      "name": "Old Well",
+      "zone": "village",
+      "description": "A stone well stands in a small yard between buildings. A wooden bucket on a fraying rope hangs over the dark opening. The water below is still and black, but when you lean over the edge, you hear something — a faint hum, rhythmic and low, rising from deep underground.",
+      "exits": { "south": "village_square" },
+      "items": []
+    },
+    "research_approach": {
+      "name": "Research Station Approach",
+      "zone": "research",
+      "description": "A gravel road, overrun with weeds, leads to a cluster of prefabricated buildings behind a chain-link fence. A faded sign reads 'MERIDIAN RESEARCH GROUP - GEOLOGICAL SURVEY STATION 7 - AUTHORIZED PERSONNEL ONLY'. The gate stands open, its lock cut long ago.",
+      "exits": { "south": "village_north", "north": "research_courtyard" },
+      "items": []
+    },
+    "research_courtyard": {
+      "name": "Research Station Courtyard",
+      "zone": "research",
+      "description": "A central courtyard between four buildings. Cracked concrete underfoot, with weeds pushing through. A rusted flagpole stands bare. The buildings are labeled: LABORATORY (north), QUARTERS (east), STORAGE (west), and ADMINISTRATION (south-east). Emergency power cables snake between the buildings.",
+      "exits": { "south": "research_approach", "north": "research_lab", "east": "research_quarters", "west": "research_storage", "southeast": "research_admin" },
+      "items": []
+    },
+    "research_lab": {
+      "name": "Main Laboratory",
+      "zone": "research",
+      "description": "A large open laboratory filled with equipment in various states of disrepair. Oscilloscopes, spectrometers, and instruments you can't identify crowd the benches. One workstation is still active — powered by a humming generator somewhere — its screen displaying endless scrolling data. A woman in a lab coat works frantically at this station.",
+      "exits": { "south": "research_courtyard", "east": "research_lab_annex" },
+      "items": [],
+      "npc": "chen"
+    },
+    "research_lab_annex": {
+      "name": "Laboratory Annex",
+      "zone": "research",
+      "description": "A smaller room adjoining the main lab, lined with glass-fronted cabinets. Most are empty or smashed, but one intact cabinet holds rows of delicate vacuum tubes, carefully labeled. The floor is covered in scattered papers — printouts of waveform analyses and frequency charts.",
+      "exits": { "west": "research_lab" },
+      "items": ["radio_tube", "journal_5"]
+    },
+    "research_quarters": {
+      "name": "Researchers' Quarters",
+      "zone": "research",
+      "description": "A long prefab building divided into small dormitory rooms. Most doors stand open, revealing stripped beds and empty closets. The researchers clearly left in an orderly fashion — no personal effects remain. One room at the end of the hall has its door closed and locked.",
+      "exits": { "west": "research_courtyard", "end": "research_voss_room" },
+      "lockedExits": { "end": { "key": "brass_key", "message": "The door at the end of the hall is locked with a brass deadbolt." } },
+      "items": []
+    },
+    "research_voss_room": {
+      "name": "Dr. Voss's Room",
+      "zone": "research",
+      "description": "Elara Voss's private quarters. Unlike the others, this room is full of life — or was. Books overflow from shelves, star charts cover one wall, and a desk is buried under notebooks. The bed is neatly made, as if she expected to return. A framed photo shows a younger Voss smiling at the mouth of a cave. On the desk, a journal page is pinned under a crystal paperweight.",
+      "exits": { "out": "research_quarters" },
+      "items": ["journal_6"]
+    },
+    "research_storage": {
+      "name": "Storage Building",
+      "zone": "research",
+      "description": "A warehouse-style building filled with crates and shelving units. Most supplies have been picked over, but there's still plenty of mundane equipment: tarps, PVC pipes, empty sample containers. A large workbench against the back wall holds heavier tools. Beneath the workbench, a heavy battery sits connected to a charging station — its indicator light glows green.",
+      "exits": { "east": "research_courtyard" },
+      "items": ["radio_battery", "crowbar"]
+    },
+    "research_admin": {
+      "name": "Administration Building",
+      "zone": "research",
+      "description": "The administrative office of the research station. Filing cabinets line the walls, most drawers hanging open and empty. A large desk dominates the room, its surface clean except for a single folder marked 'CONTINGENCY PROTOCOL — DO NOT DISTRIBUTE'. The folder contains evacuation plans and... something else.",
+      "exits": { "northwest": "research_courtyard" },
+      "items": ["journal_7"]
+    },
+    "research_generator": {
+      "name": "Generator Room",
+      "zone": "research",
+      "description": "A small concrete building housing two diesel generators. One is dead and rusted. The other chugs along faithfully, its fuel tank reading one-quarter full. It powers the single workstation in the lab. How long it's been running like this is anyone's guess.",
+      "exits": { "south": "research_courtyard" },
+      "items": []
+    },
+    "research_antenna": {
+      "name": "Antenna Array",
+      "zone": "research",
+      "description": "Behind the research station, a field of antenna dishes and sensor equipment stretches across a cleared area. Most are inoperable, their cables cut or corroded. One large dish still points skyward, slowly rotating. It emits a low hum that makes your teeth ache. The ground beneath it is scorched black in a perfect circle.",
+      "exits": { "south": "research_courtyard" },
+      "items": []
+    },
+    "marsh_entrance": {
+      "name": "Marsh Entrance",
+      "zone": "marsh",
+      "description": "The marsh swallows the firm ground entirely. Murky water stretches between hummocks of reedy grass. Dead trees stand like sentinels, their reflections doubling the sense of desolation. Your lantern pushes back the gloom but reveals unsettling things — bubbles rising from the muck, ripples with no visible source. A path of partially submerged stones leads deeper in.",
+      "exits": { "south": "jungle_marsh_edge", "north": "marsh_deep" },
+      "items": []
+    },
+    "marsh_deep": {
+      "name": "Deep Marsh",
+      "zone": "marsh",
+      "description": "You're waist-deep in stagnant water. The stones underfoot are treacherous and the mud pulls at every step. Pale lights dance between the dead trees — not reflected lantern light, something else entirely. They move with purpose, circling you slowly. The whispers are louder here, almost intelligible.",
+      "exits": { "south": "marsh_entrance", "east": "marsh_pools", "north": "marsh_crossing" },
+      "items": []
+    },
+    "marsh_pools": {
+      "name": "Sulfur Pools",
+      "zone": "marsh",
+      "description": "Bubbling pools of sulfurous water dot this area of the marsh, their edges crusted with yellow mineral deposits. The stench is overpowering. Steam rises in lazy columns, making everything hazy and unreal. In the center of the largest pool, barely visible through the steam, something glints.",
+      "exits": { "west": "marsh_deep" },
+      "items": ["stone_tablet"]
+    },
+    "marsh_crossing": {
+      "name": "Marsh Crossing",
+      "zone": "marsh",
+      "description": "A makeshift bridge of lashed-together logs spans the worst of the marsh. It creaks ominously under your weight but holds. From here you can see the ground rising to the north — the edge of the mountain's foothills. The marsh thins to the northeast, where rocky ground begins to assert itself.",
+      "exits": { "south": "marsh_deep", "north": "mountain_base", "northeast": "cave_entrance" },
+      "items": []
+    },
+    "marsh_island": {
+      "name": "Marsh Island",
+      "zone": "marsh",
+      "description": "A small rise of solid ground in the midst of the marsh, barely ten feet across. A single dead tree stands at its center. At the tree's base, tied to a root, is a waterproof bag. Someone left this here deliberately.",
+      "exits": { "south": "marsh_deep" },
+      "items": ["journal_8"]
+    },
+    "marsh_willows": {
+      "name": "Weeping Willows",
+      "zone": "marsh",
+      "description": "A grove of ancient willows, their trailing branches creating curtains of green that brush the water's surface. It's almost peaceful here — the whispers seem muted, the lights distant. The willows form a natural shelter. Animal bones are scattered around the roots, picked clean.",
+      "exits": { "east": "marsh_deep" },
+      "items": []
+    },
+    "marsh_ruins": {
+      "name": "Sunken Ruins",
+      "zone": "marsh",
+      "description": "Stone walls protrude from the marsh water at odd angles — the remains of a structure far older than the village. The stonework matches the carvings on the jungle path. Whatever this was — a watchtower? a gate? — it has been mostly claimed by the marsh. Carved symbols are still visible on one standing section of wall.",
+      "exits": { "south": "marsh_crossing" },
+      "items": []
+    },
+    "cave_entrance": {
+      "name": "Cave Entrance",
+      "zone": "caves",
+      "description": "A wide opening in the rocky hillside, tall enough to walk through without ducking. Cool air flows outward, carrying the scent of wet stone and something metallic. The researchers installed guide ropes along the walls, though many have come loose. The darkness beyond your lantern's reach feels thick and watchful. The whispers are unmistakable here — a constant murmur just below understanding.",
+      "exits": { "southwest": "marsh_crossing", "in": "cave_tunnel" },
+      "items": []
+    },
+    "cave_tunnel": {
+      "name": "Main Tunnel",
+      "zone": "caves",
+      "description": "A natural tunnel through limestone, smoothed by millennia of water flow. Stalactites hang from the ceiling like stone teeth. The guide ropes continue along the left wall. The tunnel branches — one path descends steeply to the right, another continues level to the left. Mineral deposits on the walls catch your lantern light, glittering like embedded stars.",
+      "exits": { "out": "cave_entrance", "right": "cave_descent", "left": "cave_gallery" },
+      "items": []
+    },
+    "cave_gallery": {
+      "name": "Crystal Gallery",
+      "zone": "caves",
+      "description": "The tunnel opens into a breathtaking gallery. Massive crystal formations grow from floor and ceiling, some meeting in the middle like frozen columns of light. Your lantern refracts through them, casting rainbow patterns on every surface. The crystals hum — a pure, clear note that resonates in your chest. It's beautiful and deeply unsettling.",
+      "exits": { "right": "cave_tunnel", "north": "cave_lake" },
+      "items": []
+    },
+    "cave_descent": {
+      "name": "Steep Descent",
+      "zone": "caves",
+      "description": "A precarious path descends at a sharp angle, with rough-hewn steps carved into the rock. A guide rope, frayed but intact, offers some security. The air grows warmer as you descend, and the whispers intensify. At the bottom, the passage levels out and continues into darkness.",
+      "exits": { "up": "cave_tunnel", "down": "cave_chamber" },
+      "items": []
+    },
+    "cave_chamber": {
+      "name": "Resonance Chamber",
+      "zone": "caves",
+      "description": "An enormous natural cavern, its ceiling lost in darkness above. The walls are covered in the same unknown script seen on the stone markers. In the center of the chamber, on a raised stone platform, sits the artifact — a crystalline orb in a frame of dark metal, pulsing with inner light. The whispers emanate from it in waves. This is the source.",
+      "exits": { "up": "cave_descent", "east": "cave_hermit" },
+      "items": ["artifact"],
+      "special": "The artifact hums intensely as you approach. The whispers become almost words — almost, but not quite. Taking the artifact feels significant, irreversible."
+    },
+    "cave_hermit": {
+      "name": "Hermit's Alcove",
+      "zone": "caves",
+      "description": "A small side cave, made surprisingly comfortable. A fire burns in a ring of stones — how it has fuel or ventilation down here is a mystery. Dried herbs hang from crude hooks in the ceiling. Worn cushions surround the fire. A blind figure sits among them, perfectly still, as if waiting for you.",
+      "exits": { "west": "cave_chamber" },
+      "items": [],
+      "npc": "hermit"
+    },
+    "cave_lake": {
+      "name": "Underground Lake",
+      "zone": "caves",
+      "description": "The gallery opens onto the shore of a vast underground lake. The water is black and perfectly still, reflecting your lantern like a dark mirror. The far shore is invisible in the darkness. The crystal formations continue along the walls, providing a faint ambient glow. Something large moves beneath the surface — a shadow, there and gone.",
+      "exits": { "south": "cave_gallery", "across": "cave_grotto" },
+      "requires": { "item": "rope", "message": "The lake is too wide to swim safely, and something moves in the deep water. You need a way to cross — perhaps a rope to traverse along the crystal formations overhead." },
+      "items": []
+    },
+    "cave_grotto": {
+      "name": "Crystal Grotto",
+      "zone": "caves",
+      "description": "Beyond the lake, a small grotto blazes with crystal light. Every surface is encrusted with luminous crystals in shades of blue and violet. In the center, on a natural stone pedestal, sits a key made entirely of crystal, glowing with the same inner light as the artifact. The air here is warm and smells of ozone.",
+      "exits": { "across": "cave_lake" },
+      "items": ["crystal_key"]
+    },
+    "cave_passage_deep": {
+      "name": "Deep Passage",
+      "zone": "caves",
+      "description": "A narrow passage that winds deeper into the earth. The walls press close, and you have to turn sideways in places. The stone is warm to the touch. Veins of crystal run through the rock like luminous arteries. The passage eventually connects to a vertical shaft with iron rungs hammered into the wall.",
+      "exits": { "south": "cave_chamber", "up": "cave_shaft" },
+      "items": []
+    },
+    "cave_shaft": {
+      "name": "Vertical Shaft",
+      "zone": "caves",
+      "description": "A narrow vertical shaft with iron rungs set into the rock. Looking up, you can see distant daylight — this shaft connects the caves to the surface. The climb is long but the rungs are solid. The whispers echo strangely in the confined space, seeming to come from above and below simultaneously.",
+      "exits": { "down": "cave_passage_deep", "up": "ruins_basement" },
+      "items": []
+    },
+    "mountain_base": {
+      "name": "Mountain Base",
+      "zone": "mountain",
+      "description": "The foothills of the island's central mountain rise before you, covered in scrubby vegetation that transitions to bare rock higher up. A rough trail switchbacks up the slope. To the south, the marsh spreads like a dark stain. The air is cleaner here, and you can see much of the island laid out below — jungle, village, the distant gleam of the sea.",
+      "exits": { "south": "marsh_crossing", "up": "mountain_trail_lower" },
+      "items": []
+    },
+    "mountain_trail_lower": {
+      "name": "Lower Mountain Trail",
+      "zone": "mountain",
+      "description": "A rocky trail climbs through sparse trees and tough shrubs. The view expands with every switchback. You can see the research station's buildings to the southeast, and the lighthouse winking on the western headland. Loose scree makes the footing treacherous. Someone has placed cairns to mark the trail.",
+      "exits": { "down": "mountain_base", "up": "mountain_trail_upper", "south": "jungle_hidden_path" },
+      "items": []
+    },
+    "mountain_trail_upper": {
+      "name": "Upper Mountain Trail",
+      "zone": "mountain",
+      "description": "Above the tree line now, the trail crosses bare rock and patches of hardy mountain grass. The wind is fierce up here, whipping at your clothes. The entire island is visible — a green jewel in an endless blue sea. No other land in sight. The trail continues up toward the summit and a ridge extends to the east.",
+      "exits": { "down": "mountain_trail_lower", "up": "mountain_summit", "east": "mountain_ridge" },
+      "items": []
+    },
+    "mountain_summit": {
+      "name": "Mountain Summit",
+      "zone": "mountain",
+      "description": "The highest point on the island. A cairn of stacked stones marks the summit, with a weathered flag — the research team's banner — snapping in the wind. The view is staggering: the island entire, the reef that encircles it, the open ocean in every direction. On a clear day you might see the mainland, but today there's only haze. Carved into the summit rock is the symbol you've seen throughout the island — three concentric circles.",
+      "exits": { "down": "mountain_trail_upper" },
+      "items": ["journal_9"]
+    },
+    "mountain_ridge": {
+      "name": "Eastern Ridge",
+      "zone": "mountain",
+      "description": "A narrow ridge extends east from the main peak, dropping steeply on both sides. The wind howls across the exposed rock. At the far end of the ridge, you can see stone structures — the temple ruins, built on a promontory overlooking the eastern sea. A precarious path leads to them.",
+      "exits": { "west": "mountain_trail_upper", "east": "ruins_approach" },
+      "items": []
+    },
+    "mountain_meadow": {
+      "name": "Mountain Meadow",
+      "zone": "mountain",
+      "description": "A sheltered meadow on the mountain's southern slope, protected from the worst winds by rock formations. Wildflowers bloom in profusion — purple, gold, white. A freshwater spring bubbles from the rocks, feeding a tiny stream that disappears downhill. It's peaceful here. The whispers are faint, almost silent.",
+      "exits": { "north": "mountain_trail_upper" },
+      "items": ["map_fragment_3"]
+    },
+    "mountain_lookout": {
+      "name": "Lookout Point",
+      "zone": "mountain",
+      "description": "A flat rock platform jutting out from the mountainside, offering a panoramic view of the island's western coast. The lighthouse is clearly visible below, its light sweeping the darkening sea. Someone has left a pair of binoculars here, mounted on a tripod — they're fixed, pointing at the horizon. Through them, you can barely make out... something. A shape in the distant haze.",
+      "exits": { "east": "mountain_trail_lower" },
+      "items": []
+    },
+    "coast_trail_mid": {
+      "name": "Coastal Trail",
+      "zone": "lighthouse",
+      "description": "The coastal trail continues along dramatic cliffs. Sea birds nest in the rock face, filling the air with their cries. The path widens here, becoming more stable. Ahead, the lighthouse grows larger — a white tower on a rocky headland, its light turning slowly. A set of stone steps leads down to a small landing beach.",
+      "exits": { "southeast": "coast_trail_south", "north": "lighthouse_grounds" },
+      "items": []
+    },
+    "lighthouse_grounds": {
+      "name": "Lighthouse Grounds",
+      "zone": "lighthouse",
+      "description": "The lighthouse compound sits on a windswept headland. A white-painted stone tower rises sixty feet, crowned with its glass-enclosed light. A keeper's cottage squats beside it, smoke trickling from its chimney. A path leads to the tower entrance, and another winds down to a workshop built into the cliff face. The grounds are surprisingly well-maintained — someone has been trimming the grass.",
+      "exits": { "south": "coast_trail_mid", "tower": "lighthouse_base", "cottage": "lighthouse_cottage", "workshop": "lighthouse_workshop" },
+      "items": []
+    },
+    "lighthouse_base": {
+      "name": "Lighthouse Base",
+      "zone": "lighthouse",
+      "description": "The ground floor of the lighthouse tower. A spiral iron staircase winds upward through the center. The walls are thick stone, cool and damp. Storage shelves hold lamp oil, cleaning supplies, and maritime signal flags. A heavy door leads to a storage room beneath the stairs.",
+      "exits": { "out": "lighthouse_grounds", "up": "lighthouse_mid", "storage": "lighthouse_storage" },
+      "items": []
+    },
+    "lighthouse_mid": {
+      "name": "Lighthouse Gallery",
+      "zone": "lighthouse",
+      "description": "Halfway up the tower, a gallery encircles the interior with windows offering views in every direction. Charts and navigation maps are pinned to the walls. A logbook sits open on a small desk — the last entry is dated years ago, but the handwriting is steady: 'Light operational. No vessels sighted. Whispers stronger tonight.'",
+      "exits": { "down": "lighthouse_base", "up": "lighthouse_top" },
+      "items": []
+    },
+    "lighthouse_top": {
+      "name": "Lighthouse Lamp Room",
+      "zone": "lighthouse",
+      "description": "The lamp room at the top of the tower. The massive Fresnel lens rotates slowly, its prisms catching and amplifying the light into a powerful beam. The mechanism clicks and hums with clockwork precision. Through the glass walls, the view is extraordinary — the entire coastline, the reef, and on clear nights, perhaps the distant mainland. The brass key sits on the window ledge, glinting in the lamplight.",
+      "exits": { "down": "lighthouse_mid" },
+      "items": ["brass_key"]
+    },
+    "lighthouse_cottage": {
+      "name": "Keeper's Cottage",
+      "zone": "lighthouse",
+      "description": "A cozy one-room cottage with a stone fireplace, a narrow bed, a small kitchen, and shelves of books. It's clearly lived-in — the fire is banked, a kettle sits on the stove, and a half-finished crossword lies on the table. Captain Briggs has made this his home for a decade. A window faces the sea.",
+      "exits": { "out": "lighthouse_grounds" },
+      "items": []
+    },
+    "lighthouse_workshop": {
+      "name": "Workshop",
+      "zone": "lighthouse",
+      "description": "A workshop built into the cliff face, cluttered with tools, spare parts, and half-finished projects. A large workbench dominates the center, and a radio set — impressive but clearly broken — sits against the far wall. Wires dangle from its open back, and a conspicuous empty socket shows where a vacuum tube should be. Captain Briggs tinkers here, surrounded by decades of accumulated hardware.",
+      "exits": { "out": "lighthouse_grounds" },
+      "items": [],
+      "npc": "briggs",
+      "special": "radio_repair_location"
+    },
+    "lighthouse_storage": {
+      "name": "Lighthouse Storage",
+      "zone": "lighthouse",
+      "description": "A storage room beneath the lighthouse stairs. Maritime supplies, coils of rope, signal flags, and emergency equipment fill the shelves. A flare gun in a glass-fronted case catches your eye — the case is labeled 'EMERGENCY USE ONLY'.",
+      "exits": { "out": "lighthouse_base" },
+      "items": ["flare_gun"]
+    },
+    "lighthouse_rocks": {
+      "name": "Lighthouse Rocks",
+      "zone": "lighthouse",
+      "description": "Jagged rocks at the base of the lighthouse headland, constantly washed by spray. The sea churns between the rocks with considerable force. It's dangerous here — one slip and the current would drag you under. But the rocks form natural shelves where the sea deposits things: shells, driftwood, and occasionally something more interesting.",
+      "exits": { "up": "lighthouse_grounds" },
+      "items": []
+    },
+    "ruins_approach": {
+      "name": "Temple Approach",
+      "zone": "ruins",
+      "description": "A stone-paved path, remarkably intact despite its obvious age, leads toward a complex of ruined structures on the eastern promontory. The architecture is unlike anything familiar — curved walls, impossibly precise stonework, and everywhere the symbol of three concentric circles. The air crackles with static energy. Your hair stands on end.",
+      "exits": { "west": "mountain_ridge", "east": "ruins_courtyard" },
+      "items": []
+    },
+    "ruins_courtyard": {
+      "name": "Temple Courtyard",
+      "zone": "ruins",
+      "description": "An open courtyard surrounded by partially collapsed walls and fallen columns. The stone floor is inlaid with a vast mosaic depicting the island — or what the island once looked like: a mountain rising from the sea, surrounded by concentric rings of light. At the courtyard's center, a well-preserved archway leads into the main temple structure. Smaller passages lead north and south to ancillary buildings.",
+      "exits": { "west": "ruins_approach", "east": "ruins_temple", "north": "ruins_observatory", "south": "ruins_library" },
+      "items": []
+    },
+    "ruins_temple": {
+      "name": "Temple Interior",
+      "zone": "ruins",
+      "description": "The main temple chamber is awe-inspiring. Massive stone pillars support a ceiling decorated with star maps of constellations you don't recognize. The walls tell a story in carved relief — beings arriving from the sky, building on the island, placing something deep underground, and then... departing. At the far end, steps lead up to an inner sanctum.",
+      "exits": { "west": "ruins_courtyard", "up": "temple_sanctum" },
+      "items": []
+    },
+    "temple_sanctum": {
+      "name": "Temple Sanctum",
+      "zone": "ruins",
+      "description": "The innermost chamber of the temple. A stone altar dominates the room, carved with the three-circle symbol. Three keyholes are set into its surface, each labeled with a worn symbol: a wave, a mountain, and a star. Above the altar, a hole in the ceiling opens to the sky. The whispers here are almost deafening — a chorus of voices speaking in unison, urgent and yearning. If you have enough of Dr. Voss's journal, you might understand what happened here.",
+      "exits": { "down": "ruins_temple" },
+      "items": ["journal_10"],
+      "npc": "ghost_voss",
+      "special": "endgame_altar"
+    },
+    "ruins_observatory": {
+      "name": "Ruined Observatory",
+      "zone": "ruins",
+      "description": "What was once an astronomical observatory, open to the sky. Circular stone platforms at different heights once held instruments of some kind — their mounts remain, the instruments long gone. The stone is covered in astronomical notations that predate any known civilization. From here, the view of the night sky must be extraordinary.",
+      "exits": { "south": "ruins_courtyard" },
+      "items": []
+    },
+    "ruins_library": {
+      "name": "Ruined Library",
+      "zone": "ruins",
+      "description": "A low building filled with stone shelves. Where books would be, there are instead stone tablets — thousands of them, mostly cracked or fallen. The few intact tablets are covered in the same script as the artifact. One tablet near the entrance is cleaner than the others, as if recently handled. Notes in modern handwriting are taped to its surface — Dr. Voss's work.",
+      "exits": { "north": "ruins_courtyard" },
+      "items": []
+    },
+    "ruins_basement": {
+      "name": "Temple Undercroft",
+      "zone": "ruins",
+      "description": "A subterranean chamber beneath the temple, accessible from the vertical shaft in the caves. Stone corridors branch in several directions. The walls glow faintly from crystal veins in the rock. This space connects the cave system to the temple above — the builders clearly intended them as a single complex. Steps lead up to the temple interior.",
+      "exits": { "down": "cave_shaft", "up": "ruins_temple" },
+      "items": []
+    },
+    "ruins_garden": {
+      "name": "Temple Garden",
+      "zone": "ruins",
+      "description": "Behind the temple complex, a garden has gone magnificently wild. Stone planters overflow with flowering vines, and fruit trees heavy with strange produce grow between tumbled walls. A stone bench sits beneath a flowering tree, facing the eastern sea. It's beautiful, and strangely peaceful for a place so charged with ancient energy.",
+      "exits": { "west": "ruins_courtyard" },
+      "items": []
+    },
+    "ruins_overlook": {
+      "name": "Eastern Overlook",
+      "zone": "ruins",
+      "description": "The easternmost point of the temple complex — and of the island itself. A stone platform juts out over a sheer drop to the sea hundreds of feet below. The wind is tremendous. From here, facing east across the endless ocean, the feeling of isolation is absolute. And yet... on quiet nights, the whispers seem to come FROM the east. From somewhere out there, across the water, across the dark.",
+      "exits": { "west": "ruins_courtyard" },
+      "items": []
+    }
+  },
+  "puzzles": {
+    "radio_repair": {
+      "description": "Repair the lighthouse radio to call for rescue",
+      "requires": ["radio_tube", "radio_antenna", "radio_battery"],
+      "location": "lighthouse_workshop",
+      "reward": "Can call for rescue (one of two endings)",
+      "hint": "Captain Briggs needs three parts: a vacuum tube (research station), copper antenna (village store), and a battery (research storage)."
+    },
+    "temple_keys": {
+      "description": "Place the three keys in the temple altar to silence the beacon",
+      "requires": ["rusty_key", "brass_key", "crystal_key"],
+      "location": "temple_sanctum",
+      "reward": "Silence the artifact beacon (required for best ending)",
+      "hint": "The keys are hidden: rusty key in the tidepools (sea), brass key at the lighthouse top (sky), crystal key in the Crystal Grotto (earth). Place them in order: sea, earth, sky."
+    },
+    "marsh_access": {
+      "description": "Access the marsh safely",
+      "requires": ["lantern"],
+      "location": "jungle_marsh_edge",
+      "hint": "Find the lantern in the sea cave on the eastern beach."
+    },
+    "lake_crossing": {
+      "description": "Cross the underground lake",
+      "requires": ["rope"],
+      "location": "cave_lake",
+      "hint": "Find rope in the village store's back room (need rusty key to unlock)."
+    },
+    "store_unlock": {
+      "description": "Unlock the village store back room",
+      "requires": ["rusty_key"],
+      "location": "village_store",
+      "hint": "The rusty key is in the tidepools on the eastern beach."
+    },
+    "voss_room_unlock": {
+      "description": "Unlock Dr. Voss's room",
+      "requires": ["brass_key"],
+      "location": "research_quarters",
+      "hint": "Captain Briggs found the brass key — talk to him at the lighthouse workshop, ask about 'key'."
+    },
+    "maya_trade": {
+      "description": "Trade the fishing net to Maya for information",
+      "requires": ["fishing_net"],
+      "location": "jungle_camp",
+      "hint": "Find the fishing net in the Eastern Cove. Bring it to Maya in the jungle camp and mention 'net'."
+    },
+    "hermit_trade": {
+      "description": "Bring the stone tablet to the Hermit",
+      "requires": ["stone_tablet"],
+      "location": "cave_hermit",
+      "hint": "Find the stone tablet in the marsh sulfur pools. Bring it to the Hermit and ask about it."
+    },
+    "chen_tablet": {
+      "description": "Show the stone tablet to Dr. Chen",
+      "requires": ["stone_tablet"],
+      "location": "research_lab",
+      "hint": "After finding the tablet, show it to Dr. Chen. She'll decode the key sequence for the temple."
+    }
+  },
+  "endings": {
+    "silence_and_escape": {
+      "description": "The Best Ending — Silence the beacon AND repair the radio",
+      "requires": ["temple_keys_solved", "radio_repaired"],
+      "text": "With the beacon silenced, the island falls quiet for the first time in a decade. The whispers fade to nothing. The marsh lights dim and die. Captain Briggs's voice crackles over the newly repaired radio: 'Mayday, mayday — this is lighthouse station Whispering Isle requesting immediate evacuation...' Within hours, you see the lights of a rescue vessel on the horizon. As you leave the island behind, you take one last look at the temple on the ridge. Dr. Voss's translucent figure stands there, watching. She raises a hand — in farewell, or in thanks — and fades into the morning light. The Whispering Isle falls silent at last. YOU HAVE COMPLETED THE WHISPERING ISLE."
+    },
+    "escape_only": {
+      "description": "The Neutral Ending — Repair the radio without silencing the beacon",
+      "requires": ["radio_repaired"],
+      "text": "The radio crackles to life and Captain Briggs sends the distress call. Rescue comes within hours. As the boat pulls away from the island, you hear the whispers still — carried on the wind across the water. Whatever Dr. Voss awakened still calls out into the void. You escaped, but the beacon still burns. The island still whispers. And somewhere, out in the dark between the stars, something is still listening. THE END — But is it really over?"
+    },
+    "silence_only": {
+      "description": "The Bittersweet Ending — Silence the beacon but can't repair the radio",
+      "requires": ["temple_keys_solved"],
+      "text": "The three keys turn. The altar hums, vibrates, and falls silent. The whispers cease. The crystal light dims to nothing. The island exhales. Dr. Voss's spirit smiles and fades. You've saved the island — but you're still stranded on it. You stand on the eastern overlook, watching the sea. Somewhere out there is the world you came from. Maybe a ship will pass. Maybe you'll find another way. But at least the silence is real now, and the stars above are just stars. THE END — For now."
+    }
+  }
+}

@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZZTT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        #content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .game-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            pointer-events: none;
+        }
+        .game-container * {
+            pointer-events: auto;
+        }
+        .main-board {
+            border: 3px solid #4a4a6a;
+            background: rgba(15, 15, 26, 0.85);
+        }
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .panel-box {
+            background: rgba(22, 33, 62, 0.85);
+            border: 2px solid #4a4a6a;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .panel-box h3 {
+            color: #eee;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        #next-piece {
+            background: #0f0f1a;
+        }
+        .info-text {
+            color: #00d4ff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .controls {
+            color: #aaa;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+        .controls span {
+            color: #00d4ff;
+        }
+        #start-btn {
+            background: #00d4ff;
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #start-btn:hover {
+            background: #00a8cc;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas"></canvas>
+    <div id="content"></div>
+
+    <script src="tetris.js"></script>
+    <script src="tetris-rain.js"></script>
+    <script src="breakout-rain.js"></script>
+    <script src="snake-rain.js"></script>
+    <script src="survivor-rain.js"></script>
+    <script src="island-data-inline.js"></script>
+    <script src="island-rain.js"></script>
+    <script src="maze3d-rain.js"></script>
+    <script src="vim-rain.js"></script>
+    <script>
+        // ── Matrix Rain (persistent, never reloads) ──
+        const matrixCanvas = document.getElementById('matrixCanvas');
+        const matrixCtx = matrixCanvas.getContext('2d');
+
+        function resizeCanvas() {
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+
+        const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%';
+        function calcDefaultFontSize() {
+            const w = window.innerWidth;
+            if (w >= 2560) return 18;
+            if (w >= 1920) return 16;
+            if (w >= 1280) return 14;
+            if (w >= 768) return 12;
+            return 10;
+        }
+        let fontSize = parseInt(localStorage.getItem('zztt-font-size')) || calcDefaultFontSize();
+
+        // Rain speed multiplier (1 = default, 0.5 = slow, 2 = fast)
+        let rainSpeed = parseFloat(localStorage.getItem('zztt-rain-speed')) || 1;
+
+        // Rain color presets
+        const RAIN_COLORS = {
+            green:  { bright: '#0f0',    dim: '#040',    board: '#010',    glow: 'rgba(0, 255, 0, 0.03)' },
+            cyan:   { bright: '#0ff',    dim: '#044',    board: '#011',    glow: 'rgba(0, 255, 255, 0.03)' },
+            red:    { bright: '#f33',    dim: '#400',    board: '#100',    glow: 'rgba(255, 50, 50, 0.03)' },
+            amber:  { bright: '#ffa000', dim: '#440',    board: '#110',    glow: 'rgba(255, 160, 0, 0.03)' },
+            purple: { bright: '#c06ff0', dim: '#304',    board: '#101',    glow: 'rgba(180, 100, 240, 0.03)' },
+            white:  { bright: '#ccc',    dim: '#333',    board: '#111',    glow: 'rgba(200, 200, 200, 0.03)' },
+            blue:   { bright: '#44f',    dim: '#004',    board: '#001',    glow: 'rgba(60, 60, 255, 0.03)' },
+            pink:   { bright: '#f5a',    dim: '#402',    board: '#101',    glow: 'rgba(255, 85, 170, 0.03)' },
+        };
+        let rainColorName = localStorage.getItem('zztt-rain-color') || 'green';
+        let rainColor = RAIN_COLORS[rainColorName] || RAIN_COLORS.green;
+        let columns = Math.floor(matrixCanvas.width / fontSize);
+        let rows = Math.floor(matrixCanvas.height / fontSize);
+        let drops = [];
+
+        let fixedEntries = [];
+        let fixedCells = {};
+        let fixedLayout = [];
+        let cellOverrideProvider = null;
+        let consoleOpen = false;
+        let consoleInput = '';
+        let consoleCells = {};
+        let consoleLayout = [];
+        let consoleBounds = null; // { top, bottom, left, right }
+        let consoleBorderCells = {};
+
+        function setFixedEntries(entries) {
+            fixedEntries = entries;
+            rebuildFixedCells();
+        }
+
+        function rebuildFixedCells() {
+            fixedCells = {};
+            fixedLayout = [];
+            for (const entry of fixedEntries) {
+                const startCol = Math.floor(columns / 2) - Math.floor(entry.text.length / 2);
+                fixedLayout.push({ text: entry.text, row: entry.row, startCol, route: entry.route });
+                for (let i = 0; i < entry.text.length; i++) {
+                    const col = startCol + i;
+                    fixedCells[col + ',' + entry.row] = { char: entry.text[i], route: entry.route };
+                }
+            }
+        }
+
+        function initDrops() {
+            columns = Math.floor(matrixCanvas.width / fontSize);
+            rows = Math.floor(matrixCanvas.height / fontSize);
+            drops = [];
+            for (let i = 0; i < columns; i++) {
+                drops[i] = Math.random() * -100;
+            }
+            rebuildFixedCells();
+        }
+
+        function setFontSize(newSize) {
+            fontSize = Math.max(6, Math.min(32, newSize));
+            localStorage.setItem('zztt-font-size', fontSize);
+            // Full clear to avoid artifacts
+            matrixCtx.fillStyle = '#000';
+            matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+            initDrops();
+            if (cellOverrideProvider && cellOverrideProvider.resize) {
+                cellOverrideProvider.resize(columns, rows);
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initDrops();
+            if (cellOverrideProvider && cellOverrideProvider.resize) {
+                cellOverrideProvider.resize(columns, rows);
+            }
+        });
+
+        function drawMatrixRain() {
+            matrixCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+            // Full-clear the board area for providers that need crisp frames (e.g. 3D renderer)
+            if (cellOverrideProvider && cellOverrideProvider.fullClear) {
+                const bx = cellOverrideProvider.boardStartCol * fontSize;
+                const by = (cellOverrideProvider.boardStartRow - 1) * fontSize;
+                const bw = (cellOverrideProvider.COLS + 2) * fontSize;
+                const bh = (cellOverrideProvider.TROWS + 2) * fontSize;
+                matrixCtx.fillStyle = '#000';
+                matrixCtx.fillRect(bx, by, bw, bh);
+            }
+
+            matrixCtx.font = fontSize + 'px monospace';
+
+            // Build info cell lookup for this frame
+            let infoCellMap = {};
+            if (cellOverrideProvider) {
+                const infos = cellOverrideProvider.getInfoEntries();
+                for (const info of infos) {
+                    for (let c = 0; c < info.text.length; c++) {
+                        infoCellMap[(info.col + c) + ',' + info.row] = {
+                            char: info.text[c],
+                            color: info.color
+                        };
+                    }
+                }
+            }
+
+            for (let i = 0; i < drops.length; i++) {
+                const speed = 6 + Math.random() * 10;
+                drops[i] += (speed / fontSize) * rainSpeed;
+
+                if (Math.random() > 0.9) {
+                    drops[i] += Math.random() * 2 * rainSpeed;
+                }
+
+                const row = Math.floor(drops[i]);
+                const key = i + ',' + row;
+
+                // Check for game cell override, info text, border, then fixed text
+                let text, color = rainColor.bright;
+                let override = cellOverrideProvider && cellOverrideProvider.getCellOverride(i, row);
+                let infoOverride = !override && cellOverrideProvider && infoCellMap[i + ',' + row];
+                let border = !override && !infoOverride && cellOverrideProvider && cellOverrideProvider.getBorderOverride(i, row);
+
+                if (override) {
+                    text = override.char;
+                    color = override.color;
+                } else if (infoOverride) {
+                    text = infoOverride.char;
+                    color = infoOverride.color;
+                } else if (border) {
+                    text = border.char;
+                    color = border.color;
+                } else if (fixedCells[key]) {
+                    text = fixedCells[key].char;
+                } else if (consoleBorderCells[key]) {
+                    text = consoleBorderCells[key].char;
+                    color = consoleBorderCells[key].color;
+                } else if (consoleCells[key]) {
+                    text = consoleCells[key].char;
+                } else {
+                    text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+                    // Dim rain inside the console area
+                    if (consoleBounds &&
+                        i > consoleBounds.left && i < consoleBounds.right &&
+                        row > consoleBounds.top && row < consoleBounds.bottom) {
+                        color = rainColor.dim;
+                    }
+                    // Dim rain inside the game board
+                    else if (cellOverrideProvider &&
+                        i >= cellOverrideProvider.boardStartCol &&
+                        i < cellOverrideProvider.boardStartCol + cellOverrideProvider.COLS &&
+                        row >= cellOverrideProvider.boardStartRow &&
+                        row < cellOverrideProvider.boardStartRow + cellOverrideProvider.TROWS) {
+                        color = rainColor.board;
+                    }
+                }
+
+                matrixCtx.fillStyle = color;
+                matrixCtx.fillText(text, i * fontSize, row * fontSize);
+
+                if (drops[i] > rows + 10) {
+                    drops[i] = Math.random() * -50;
+                }
+            }
+
+            matrixCtx.fillStyle = rainColor.glow;
+            matrixCtx.font = fontSize + 'px monospace';
+            for (const entry of fixedLayout) {
+                for (let i = 0; i < entry.text.length; i++) {
+                    matrixCtx.fillText(entry.text[i], (entry.startCol + i) * fontSize, entry.row * fontSize);
+                }
+            }
+            for (const entry of consoleLayout) {
+                for (let i = 0; i < entry.text.length; i++) {
+                    matrixCtx.fillText(entry.text[i], (entry.startCol + i) * fontSize, entry.row * fontSize);
+                }
+            }
+
+            // Sustain info text with glow (same style as fixed text / pieces)
+            if (cellOverrideProvider) {
+                matrixCtx.globalAlpha = 0.06;
+                matrixCtx.font = fontSize + 'px monospace';
+                for (const key in infoCellMap) {
+                    const cell = infoCellMap[key];
+                    const parts = key.split(',');
+                    matrixCtx.fillStyle = cell.color;
+                    matrixCtx.fillText(cell.char, parseInt(parts[0]) * fontSize, parseInt(parts[1]) * fontSize);
+                }
+                matrixCtx.globalAlpha = 1.0;
+
+                // Sustain occupied game cells so they never fully fade
+                matrixCtx.font = fontSize + 'px monospace';
+                const occupied = cellOverrideProvider.getOccupiedCells();
+
+                // Clear cells that were occupied last frame but aren't now
+                if (occupied.stale) {
+                    matrixCtx.globalAlpha = 1.0;
+                    matrixCtx.fillStyle = '#000';
+                    for (const cell of occupied.stale) {
+                        matrixCtx.fillRect(cell.col * fontSize, (cell.row - 1) * fontSize, fontSize, fontSize);
+                    }
+                }
+                for (const cell of occupied) {
+                    const isPaddle = cell.color === '#00d4ff';
+                    const isBall = cell.color === '#fff';
+                    matrixCtx.globalAlpha = isPaddle ? 1.0 : isBall ? 0.4 : 0.25;
+                    matrixCtx.fillStyle = cell.color;
+                    const ch = cell.char || matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+                    matrixCtx.fillText(ch, cell.col * fontSize, cell.row * fontSize);
+                }
+                matrixCtx.globalAlpha = 1.0;
+            }
+        }
+
+        initDrops();
+
+        function hitTestFixed(x, y) {
+            const pad = fontSize;
+            for (const entry of fixedLayout) {
+                if (!entry.route) continue;
+                const left = entry.startCol * fontSize - pad;
+                const right = (entry.startCol + entry.text.length) * fontSize + pad;
+                const top = (entry.row - 1) * fontSize - pad;
+                const bottom = entry.row * fontSize + pad;
+                if (x >= left && x <= right && y >= top && y <= bottom) {
+                    return entry;
+                }
+            }
+            return null;
+        }
+
+        matrixCanvas.addEventListener('click', (e) => {
+            const entry = hitTestFixed(e.offsetX, e.offsetY);
+            if (entry) navigateTo(entry.route);
+        });
+
+        matrixCanvas.addEventListener('mousemove', (e) => {
+            matrixCanvas.style.cursor = hitTestFixed(e.offsetX, e.offsetY) ? 'pointer' : 'default';
+        });
+
+        const TARGET_FPS = 60;
+        const FRAME_INTERVAL = 1000 / TARGET_FPS;
+        let lastFrameTime = 0;
+        (function matrixUpdate(now) {
+            requestAnimationFrame(matrixUpdate);
+            const elapsed = now - lastFrameTime;
+            if (elapsed < FRAME_INTERVAL) return;
+            lastFrameTime = now - (elapsed % FRAME_INTERVAL);
+            drawMatrixRain();
+        })(performance.now());
+
+        // ── Router ──
+        const contentEl = document.getElementById('content');
+        let currentTeardown = null;
+
+        function navigateTo(hash) {
+            window.location.hash = hash;
+        }
+
+        function handleRoute() {
+            const route = window.location.hash || '#/';
+
+            if (currentTeardown) {
+                currentTeardown();
+                currentTeardown = null;
+            }
+
+            if (route === '#/tetris-rain') {
+                showTetrisRain();
+            } else {
+                showHome();
+            }
+        }
+
+        function showHome() {
+            contentEl.innerHTML = '';
+            cellOverrideProvider = null;
+            setFixedEntries([
+                { text: 'ZZTT', row: 3 },
+            ]);
+        }
+
+        function showTetrisRain() {
+            contentEl.innerHTML = '';
+            setFixedEntries([
+                { text: 'ZZTT', row: 3, route: '#/' },
+            ]);
+            const instance = initTetrisRain(columns, rows, fontSize);
+            cellOverrideProvider = instance;
+            currentTeardown = () => {
+                instance.destroy();
+                cellOverrideProvider = null;
+            };
+        }
+
+        window.addEventListener('hashchange', handleRoute);
+        handleRoute();
+
+        // ── Console ──
+        let consoleHistory = [];
+        let consoleMaxLines = parseInt(localStorage.getItem('zztt-maxlines')) || 20;
+        let previousRoute = '#/';
+        let launchedFromConsole = false;
+
+        function rebuildConsoleCells() {
+            consoleCells = {};
+            consoleLayout = [];
+            consoleBounds = null;
+            consoleBorderCells = {};
+            if (!consoleOpen) return;
+
+            const padCol = 2;
+            const startCol = padCol + 1;
+            const maxCols = columns - padCol * 2 - 2;
+
+            // Prompt line at the bottom
+            const promptRow = rows - 2 - 1; // leave room for bottom border
+            const promptText = '> ' + consoleInput + '_';
+            addConsoleLine(promptText, promptRow, startCol, maxCols);
+
+            // History lines above the prompt, bottom-up
+            let topRow = promptRow;
+            let histRow = promptRow - 1;
+            for (let h = consoleHistory.length - 1; h >= 0 && histRow >= 2; h--) {
+                const line = consoleHistory[h];
+                const wrappedLines = [];
+                for (let c = 0; c < line.length; c += maxCols) {
+                    wrappedLines.push(line.slice(c, c + maxCols));
+                }
+                if (wrappedLines.length === 0) wrappedLines.push('');
+                for (let w = wrappedLines.length - 1; w >= 0 && histRow >= 2; w--) {
+                    addConsoleLine(wrappedLines[w], histRow, startCol, maxCols);
+                    topRow = Math.min(topRow, histRow);
+                    histRow--;
+                }
+            }
+
+            // Compute bounds for dimming and borders
+            const bTop = topRow - 1;
+            const bBottom = promptRow + 1;
+            const bLeft = padCol;
+            const bRight = padCol + maxCols + 1;
+            consoleBounds = { top: bTop, bottom: bBottom, left: bLeft, right: bRight };
+
+            // Build border cells
+            for (let r = bTop; r <= bBottom; r++) {
+                consoleBorderCells[bLeft + ',' + r] = { char: '|', color: '#4a4a6a' };
+                consoleBorderCells[bRight + ',' + r] = { char: '|', color: '#4a4a6a' };
+            }
+            for (let c = bLeft; c <= bRight; c++) {
+                consoleBorderCells[c + ',' + bTop] = { char: '-', color: '#4a4a6a' };
+                consoleBorderCells[c + ',' + bBottom] = { char: '-', color: '#4a4a6a' };
+            }
+            // Corners
+            consoleBorderCells[bLeft + ',' + bTop] = { char: '+', color: '#4a4a6a' };
+            consoleBorderCells[bRight + ',' + bTop] = { char: '+', color: '#4a4a6a' };
+            consoleBorderCells[bLeft + ',' + bBottom] = { char: '+', color: '#4a4a6a' };
+            consoleBorderCells[bRight + ',' + bBottom] = { char: '+', color: '#4a4a6a' };
+        }
+
+        function addConsoleLine(text, row, startCol, maxCols) {
+            const entry = { text, row, startCol };
+            consoleLayout.push(entry);
+            for (let i = 0; i < text.length && i < maxCols; i++) {
+                consoleCells[(startCol + i) + ',' + row] = { char: text[i] };
+            }
+        }
+
+        function handleConsoleCommand(cmd) {
+            const trimmed = cmd.trim();
+            if (!trimmed) return;
+
+            consoleHistory.push('> ' + trimmed);
+
+            // Built-in commands
+            if (trimmed === 'help') {
+                consoleHistory.push('  commands: help, clear, font, speed, color, maxlines, exit')
+                consoleHistory.push('  colors: green cyan red amber purple white blue pink')
+                consoleHistory.push('  games: tetris, breakout, snake, survivor, world, maze3d [1-4]')
+                consoleHistory.push('  tools: vim [filename], copilot <prompt>');
+            } else if (trimmed.startsWith('font')) {
+                const parts = trimmed.split(/\s+/);
+                const size = parseInt(parts[1]);
+                if (isNaN(size) || size < 6 || size > 32) {
+                    consoleHistory.push('  usage: font <6-32>  (current: ' + fontSize + ')');
+                } else {
+                    setFontSize(size);
+                    consoleHistory.push('  font size set to ' + fontSize);
+                }
+            } else if (trimmed.startsWith('speed')) {
+                const parts = trimmed.split(/\s+/);
+                const spd = parseFloat(parts[1]);
+                if (isNaN(spd) || spd < 0.1 || spd > 5) {
+                    consoleHistory.push('  usage: speed <0.1-5>  (current: ' + rainSpeed + ')');
+                } else {
+                    rainSpeed = spd;
+                    localStorage.setItem('zztt-rain-speed', rainSpeed);
+                    consoleHistory.push('  rain speed set to ' + rainSpeed);
+                }
+            } else if (trimmed.startsWith('color')) {
+                const parts = trimmed.split(/\s+/);
+                const name = (parts[1] || '').toLowerCase();
+                if (!name || !RAIN_COLORS[name]) {
+                    consoleHistory.push('  usage: color <preset>  (current: ' + rainColorName + ')');
+                    consoleHistory.push('  presets: ' + Object.keys(RAIN_COLORS).join(', '));
+                } else {
+                    rainColorName = name;
+                    rainColor = RAIN_COLORS[name];
+                    localStorage.setItem('zztt-rain-color', name);
+                    // Clear screen to flush old color
+                    matrixCtx.fillStyle = '#000';
+                    matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                    consoleHistory.push('  rain color set to ' + name);
+                }
+            } else if (trimmed.startsWith('maxlines')) {
+                const parts = trimmed.split(/\s+/);
+                const n = parseInt(parts[1]);
+                if (isNaN(n) || n < 1 || n > 100) {
+                    consoleHistory.push('  usage: maxlines <1-100>  (current: ' + consoleMaxLines + ')');
+                } else {
+                    consoleMaxLines = n;
+                    localStorage.setItem('zztt-maxlines', n);
+                    consoleHistory.push('  maxlines set to ' + n);
+                }
+            } else if (trimmed === 'clear') {
+                consoleHistory = [];
+            } else if (trimmed === 'exit') {
+                closeConsole();
+                return;
+            } else if (trimmed === 'tetris') {
+                launchFromConsole('tetris');
+                return;
+            } else if (trimmed === 'breakout') {
+                launchFromConsole('breakout');
+                return;
+            } else if (trimmed === 'snake') {
+                launchFromConsole('snake');
+                return;
+            } else if (trimmed === 'survivor') {
+                launchFromConsole('survivor');
+                return;
+            } else if (trimmed === 'world') {
+                launchFromConsole('world');
+                return;
+            } else if (trimmed.startsWith('vim')) {
+                const vimParts = trimmed.split(/\s+/);
+                launchFromConsole('vim', vimParts[1] || 'untitled');
+                return;
+            } else if (trimmed.startsWith('maze3d')) {
+                const resParts = trimmed.split(/\s+/);
+                const res = parseInt(resParts[1]) || 1;
+                launchFromConsole('maze3d', res);
+                return;
+            } else if (trimmed.startsWith('copilot')) {
+                const prompt = trimmed.slice(7).trim();
+                if (!prompt) {
+                    consoleHistory.push('  usage: copilot <prompt>');
+                } else {
+                    consoleHistory.push('  thinking...');
+                    rebuildConsoleCells();
+                    fetch('/api/copilot', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ prompt })
+                    })
+                    .then(r => r.json())
+                    .then(data => {
+                        consoleHistory.pop(); // remove "thinking..."
+                        const respLines = (data.response || data.error || 'no response').split('\n');
+                        for (const line of respLines) {
+                            consoleHistory.push('  ' + line);
+                        }
+                        if (consoleHistory.length > consoleMaxLines) {
+                            consoleHistory = consoleHistory.slice(-consoleMaxLines);
+                        }
+                        rebuildConsoleCells();
+                    })
+                    .catch(err => {
+                        consoleHistory.pop();
+                        consoleHistory.push('  error: ' + err.message);
+                        rebuildConsoleCells();
+                    });
+                }
+            } else {
+                consoleHistory.push('  unknown: ' + trimmed);
+            }
+
+            // Trim history to maxlines
+            if (consoleHistory.length > consoleMaxLines) {
+                consoleHistory = consoleHistory.slice(-consoleMaxLines);
+            }
+            rebuildConsoleCells();
+        }
+
+        function openConsole() {
+            if (consoleOpen) return;
+            consoleOpen = true;
+            consoleInput = '';
+            consoleHistory = ['ZZTT CONSOLE', '  type "help" for commands, ~ to close', ''];
+            previousRoute = window.location.hash || '#/';
+            // Tear down current view
+            if (currentTeardown) { currentTeardown(); currentTeardown = null; }
+            contentEl.innerHTML = '';
+            cellOverrideProvider = null;
+            setFixedEntries([]);
+            rebuildConsoleCells();
+        }
+
+        function closeConsole() {
+            consoleOpen = false;
+            consoleInput = '';
+            consoleCells = {};
+            consoleLayout = [];
+            consoleBounds = null;
+            consoleBorderCells = {};
+            // Restore previous view directly (hash may already match, so force it)
+            window.location.hash = previousRoute;
+            handleRoute();
+        }
+
+        function launchFromConsole(app, param) {
+            // Hide console UI but keep state so we can return
+            consoleOpen = false;
+            consoleCells = {};
+            consoleLayout = [];
+            consoleBounds = null;
+            consoleBorderCells = {};
+            launchedFromConsole = true;
+
+            if (app === 'tetris') {
+                consoleHistory.push('  launching tetris...');
+                setFixedEntries([]);
+                const instance = initTetrisRain(columns, rows, fontSize);
+                cellOverrideProvider = instance;
+                currentTeardown = () => {
+                    instance.destroy();
+                    cellOverrideProvider = null;
+                };
+            } else if (app === 'breakout') {
+                consoleHistory.push('  launching breakout...');
+                setFixedEntries([]);
+                const instance = initBreakoutRain(columns, rows, fontSize);
+                cellOverrideProvider = instance;
+                currentTeardown = () => {
+                    instance.destroy();
+                    cellOverrideProvider = null;
+                };
+            } else if (app === 'snake') {
+                consoleHistory.push('  launching snake...');
+                setFixedEntries([]);
+                const instance = initSnakeRain(columns, rows, fontSize);
+                cellOverrideProvider = instance;
+                currentTeardown = () => {
+                    instance.destroy();
+                    cellOverrideProvider = null;
+                };
+            } else if (app === 'survivor') {
+                consoleHistory.push('  launching survivor...');
+                setFixedEntries([]);
+                const instance = initSurvivorRain(columns, rows, fontSize);
+                cellOverrideProvider = instance;
+                currentTeardown = () => {
+                    instance.destroy();
+                    cellOverrideProvider = null;
+                };
+            } else if (app === 'world') {
+                consoleHistory.push('  launching The Whispering Isle...');
+                setFixedEntries([]);
+                const instance = initIslandRain(columns, rows, fontSize);
+                cellOverrideProvider = instance;
+                currentTeardown = () => {
+                    instance.destroy();
+                    cellOverrideProvider = null;
+                };
+            } else if (app === 'vim') {
+                consoleHistory.push('  launching vim ' + (param || '') + '...');
+                setFixedEntries([]);
+                const instance = initVimRain(columns, rows, fontSize, param);
+                cellOverrideProvider = instance;
+                instance.onQuit = () => { returnToConsole(); };
+                currentTeardown = () => {
+                    instance.destroy();
+                    cellOverrideProvider = null;
+                };
+            } else if (app === 'maze3d') {
+                const res = Math.max(1, Math.min(4, param || 1));
+                const savedFontSize = fontSize;
+                if (res > 1) {
+                    setFontSize(Math.round(fontSize / res));
+                }
+                consoleHistory.push('  launching Maze 3D (res ' + res + 'x)...');
+                setFixedEntries([]);
+                const instance = initMaze3dRain(columns, rows, fontSize, res);
+                cellOverrideProvider = instance;
+                currentTeardown = () => {
+                    instance.destroy();
+                    cellOverrideProvider = null;
+                    if (res > 1) setFontSize(savedFontSize);
+                };
+            }
+        }
+
+        function returnToConsole() {
+            launchedFromConsole = false;
+            if (currentTeardown) { currentTeardown(); currentTeardown = null; }
+            contentEl.innerHTML = '';
+            cellOverrideProvider = null;
+            consoleOpen = true;
+            setFixedEntries([]);
+            rebuildConsoleCells();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            // ~ toggles console
+            if (e.key === '~' || (e.key === '`' && e.shiftKey)) {
+                e.preventDefault();
+                if (launchedFromConsole) { returnToConsole(); return; }
+                if (consoleOpen) closeConsole();
+                else openConsole();
+                return;
+            }
+
+            // Escape returns to console from a launched app
+            if (e.key === 'Escape' && launchedFromConsole) {
+                e.preventDefault();
+                returnToConsole();
+                return;
+            }
+
+            if (!consoleOpen) return;
+
+            if (e.key === 'Escape') {
+                closeConsole();
+                e.preventDefault();
+            } else if (e.key === 'Backspace') {
+                consoleInput = consoleInput.slice(0, -1);
+                rebuildConsoleCells();
+                e.preventDefault();
+            } else if (e.key === 'Enter') {
+                handleConsoleCommand(consoleInput);
+                consoleInput = '';
+                rebuildConsoleCells();
+                e.preventDefault();
+            } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+                consoleInput += e.key;
+                rebuildConsoleCells();
+                e.preventDefault();
+            }
+        });
+    </script>
+
+</body>
+</html>
