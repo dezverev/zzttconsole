@@ -2,11 +2,100 @@
 
 AI assistant powered by the [GitHub Copilot SDK](https://github.com/github/copilot-sdk), deployed as a Docker container on Azure App Service.
 
+## Azure Architecture
+
+```
+                    ┌─────────────────────────────────────────────┐
+                    │              Microsoft Entra ID              │
+                    │         (login restricted to allowed         │
+                    │          Microsoft account only)             │
+                    └──────────┬──────────────────┬───────────────┘
+                               │ auth             │ auth
+                               ▼                  ▼
+┌──────────┐    ┌──────────────────────┐    ┌──────────────────────────┐
+│          │    │   zzttconsole (B1)   │    │  zzttconsole-copilot (B1)│
+│  Browser │───▶│   Node.js frontend   │───▶│  Docker container        │
+│          │    │   serves static site │    │  Copilot SDK + OpenAI    │
+│          │    │   proxies /api/copilot│    │                          │
+└──────────┘    └──────────────────────┘    └──────────┬───────────────┘
+                         │                             │
+                         │ managed identity             │ managed identity
+                         │ token for copilot            │ for ACR pull
+                         ▼                              ▼
+                                                ┌──────────────────┐
+                                                │ zzttconsole.     │
+                                                │ azurecr.io (Basic)│
+                                                │ Container Registry│
+                                                └──────────────────┘
+```
+
+### Azure Resources
+
+| Resource | Type | SKU | Purpose |
+|----------|------|-----|---------|
+| `zzttconsole` | App Service | B1 | Frontend — static site + `/api/copilot` proxy |
+| `zzttconsole-copilot` | App Service (container) | B1 | Copilot — runs the Docker image |
+| `zzttconsole` | Container Registry | Basic | Stores the copilot Docker image |
+| `zzttconsole-auth` | Entra ID app registration | — | Frontend login (Microsoft account) |
+| `zzttconsole-copilot` | Entra ID app registration | — | Copilot token validation |
+
+### Authentication Flow
+
+The system uses two layers of Entra ID authentication to lock everything down:
+
+1. **Browser → Frontend**: Easy Auth requires Microsoft login, restricted to a single allowed account. Unauthenticated requests get redirected to the login page.
+
+2. **Frontend → Copilot**: The frontend App Service has a managed identity. It acquires a token scoped to the copilot's app registration (`api://<copilot-app-id>`) and passes it in the proxy request. The copilot has Easy Auth enabled and rejects any request without a valid token.
+
+No passwords or shared secrets are used for service-to-service auth — it's all managed identity.
+
+### Container Registry
+
+The copilot container image is stored in `zzttconsole.azurecr.io`. The copilot App Service pulls images using its managed identity with the `AcrPull` role — no admin credentials or passwords.
+
+```bash
+# Build, push, and deploy
+./deploy-copilot.sh
+
+# What it does:
+#   docker build --platform linux/amd64 → zzttconsole.azurecr.io/copilot-cli:latest
+#   docker push → ACR
+#   az webapp config container set → point App Service to new image
+#   az webapp restart
+```
+
+### GitHub Repo Access
+
+The copilot container has an SSH deploy key (ed25519) with write access to `dezverev/zzttconsole`. The private key is stored as the `DEPLOY_KEY` app setting in Azure. On startup, `entrypoint.sh` writes it to `~/.ssh/id_ed25519` and clones the repo.
+
+This gives the copilot the ability to:
+- Pull the latest skills and config on every restart
+- Push commits back to the repo (self-modification)
+
+### Cost
+
+| Resource | ~Cost/month |
+|----------|-------------|
+| App Service Plan (frontend, B1) | $13 |
+| App Service Plan (copilot, B1) | $13 |
+| Container Registry (Basic) | $5 |
+| **Total infrastructure** | **~$31** |
+
+Plus OpenAI API usage.
+
+### Setup Scripts
+
+| Script | When to run | What it does |
+|--------|-------------|--------------|
+| `setup-azure.sh` | Once | Creates resource group, ACR, app service plans, managed identities, role assignments |
+| `deploy-copilot.sh` | On code changes | Builds Docker image, pushes to ACR, configures auth + env vars, restarts |
+| `deploy.sh` | On frontend changes | Zips and deploys `matrixsite/` to the frontend App Service |
+
 ## How It Works
 
 The container runs a Node.js HTTP server that accepts prompts via `POST /ask` and returns AI responses. On startup, it clones this repo so skills and MCP tools are always loaded from the latest commit — no rebuild needed for skill changes.
 
-### Startup Flow
+### Container Startup Flow
 
 ```
 Container starts
@@ -17,7 +106,7 @@ Container starts
   → Runs node dist/server.js
 ```
 
-### Architecture
+### Request Flow
 
 ```
 POST /ask { "prompt": "..." }
@@ -99,6 +188,8 @@ Returns `{ "status": "ok" }`.
 
 ## Environment Variables
 
+Set on the Azure App Service as app settings:
+
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `COPILOT_MODEL` | Model name | `gpt-5.4-mini` |
@@ -128,10 +219,15 @@ npx tsx src/cli.ts "what's the weather in Berlin?"
 ## Deploying
 
 ```bash
-./deploy-copilot.sh
-```
+# Everything (copilot code changed):
+./deploy-copilot.sh && ./deploy.sh
 
-This builds the Docker image (linux/amd64), pushes to ACR, updates the container, and configures auth.
+# Just copilot:
+./deploy-copilot.sh
+
+# Just frontend:
+./deploy.sh
+```
 
 ## Logs
 
@@ -140,3 +236,22 @@ az webapp log tail -g zzttconsole -n zzttconsole-copilot
 ```
 
 Look for `==> Cloning zzttconsole...` or `==> Pulling latest...` to confirm the repo was loaded on startup.
+
+## Troubleshooting
+
+```bash
+# Container won't start
+az webapp log tail -g zzttconsole -n zzttconsole-copilot
+
+# Verify image architecture (must be amd64)
+az acr manifest list-metadata -r zzttconsole -n copilot-cli
+
+# Force restart
+az webapp restart -g zzttconsole -n zzttconsole-copilot
+
+# Check env vars
+az webapp config appsettings list -g zzttconsole -n zzttconsole-copilot
+
+# Verify ACR pull is using managed identity
+az webapp config show -g zzttconsole -n zzttconsole-copilot --query acrUseManagedIdentityCreds
+```
